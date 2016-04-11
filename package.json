@@ -4,18 +4,20 @@
   "description": "Data Generation Framework",
   "main": "dgf.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/your-first-node-package.git"
+    "url": "https://github.com/ogama/dgf.git"
   },
   "author": "ogama",
-  "license": "ISC",
+  "license": "",
   "bugs": {
-    "url": "https://github.com/user/your-first-node-package/issues"
+    "url": ""
   },
-  "dependencies": {},
+  "dependencies": {
+    "chai": "^3.5.0"
+  },
   "devDependencies": {
     "mocha": "^2.4.5"
   },

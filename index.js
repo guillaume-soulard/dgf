@@ -1,10 +1,22 @@
-var dgf = {
+module.exports = {
     newModel: function() {
+        return {
+            entities: {},
+            outputs: {},
+            generators: {},
+            addEntity: function (entityName, entityDef) {
+                if (typeof(this.entities[entityName]) === 'undefined') {
+                    this.entities[entityName] = entityDef;
+                } else {
+                    throw 'Entity ' + entityName + ' already exists';
+                }
+            },
+            newGenerator: function (generatorDefinition) {
         
+            }
+        };
     },
-    newEntity: function (entityName, entityDef) {
-        
-    },
+    
     types: {
         integer: {
             serial: function (options) {
@@ -46,9 +58,7 @@ var dgf = {
             
         }
     },
-    newGenerator: function (generatorDefinition) {
-        
-    },
+    
     formaters: {
         csv: function (options) {
             

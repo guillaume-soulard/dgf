@@ -1,4 +1,4 @@
-dgf = require('dgf');
+dgf = require('./dgf');
 
 var model = dgf.newModel();
 
