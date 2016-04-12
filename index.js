@@ -1,3 +1,7 @@
+var check = require("check-type")
+
+check.init();
+
 module.exports = {
     newModel: function() {
         return {
@@ -5,14 +9,31 @@ module.exports = {
             outputs: {},
             generators: {},
             addEntity: function (entityName, entityDef) {
+                                
+                if (!check(entityName).is('string')) {
+                    throw new Error('entityName must be a string');
+                }
+                
                 if (typeof(this.entities[entityName]) === 'undefined') {
                     this.entities[entityName] = entityDef;
                 } else {
-                    throw 'Entity ' + entityName + ' already exists';
+                    throw new Error('Entity ' + entityName + ' already exists in model');
                 }
             },
-            newGenerator: function (generatorDefinition) {
-        
+            addOutput: function (outputName, outpoutDefinition) {
+                
+                if (!check(outputName).is('string')) {
+                    throw new Error('outputName must be a string');
+                }
+                
+                if (typeof(this.outputs[outputName]) === 'undefined') {
+                    this.outputs[outputName] = outpoutDefinition;
+                } else {
+                    throw new Error('Output ' + outputName + ' already exists in model');
+                }                
+            },
+            addGenerator: function (generatorDefinition) {
+                
             }
         };
     },
@@ -52,10 +73,19 @@ module.exports = {
     },
     outputs: {
         file: function (options) {
-            
+            return {
+                write: function (data) {
+                    // TODO : write into a file
+                    console.log(data);
+                }
+            };
         },
         stdout: function () {
-            
+            return {
+                write: function (data) {
+                    console.log(data);
+                }
+            }
         }
     },
     
@@ -82,3 +112,10 @@ module.exports = {
         }
     }
 };
+
+var utils = {
+    check: function (structure, objectToCheck) {
+        
+        
+    }
+}

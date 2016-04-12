@@ -16,7 +16,8 @@
     "url": ""
   },
   "dependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "check-type": "^0.4.11"
   },
   "devDependencies": {
     "mocha": "^2.4.5"
