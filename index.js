@@ -106,12 +106,43 @@ module.exports = {
         }
     },
     
-    formaters: {
+    formatters: {
         csv: function (options) {
+            if (!check(options).matches({
+                separator: 'string',
+                headers: 'boolean'
+            })) {
+                throw new Error('Csv options must match : {separator:string,headers:boolean}');   
+            }
             
+            return {
+                // TODO headers
+                csvSeparator: options.separator,
+                writeHeaders: options.headers,
+                
+                formatEntity: function (entityGenerated) {
+                    var formatedEntity = '';
+                    
+                    var isFirst = true;
+                    
+                    for (var property in entityGenerated) {
+                        
+                        if (isFirst) {
+                            isFirst = false;
+                        } else {
+                            formatedEntity += this.csvSeparator;
+                        }
+                        
+                        // TODO format dates
+                        formatedEntity += entityGenerated[property];
+                    }
+                    
+                    return formatedEntity;
+                }  
+            };
         },
         xml: function (options) {
-            
+            throw new Error('Not implemented');
         }
     },
     behaviors: {

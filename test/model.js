@@ -45,7 +45,7 @@ describe('model', function () {
             model.addEntity(entityName, entity);
             
             expect(function() {
-                model.addEntity(entityName, entity)
+                model.addEntity(entityName, entity);
             }).to.throw(Error, /Entity entityName already exists in model/);
         });
         
@@ -57,7 +57,7 @@ describe('model', function () {
             var entityName = {};
             
             expect(function() {
-                model.addEntity(entityName, entity)
+                model.addEntity(entityName, entity);
             }).to.throw(Error, /entityName must be a string/);
         });
     });
