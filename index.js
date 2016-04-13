@@ -1,4 +1,6 @@
-var check = require("check-type")
+var check = require('check-type');
+var path = require('path');
+var fs = require('fs');
 
 check.init();
 
@@ -73,10 +75,25 @@ module.exports = {
     },
     outputs: {
         file: function (options) {
+            
+            if (!check(options).matches({
+                path: 'string',
+                encoding: 'string'
+            })) {
+                throw new Error('File options not matches {path:string,encoding:string}')
+            }
+            
             return {
+                
+                filePath: options.path,
+                fileEncoding: options.encoding,
                 write: function (data) {
-                    // TODO : write into a file
-                    console.log(data);
+                    if (!fs.existsSync(this.filePath)) {
+                        // create full parent file path
+                        fs.mkdirSync(path.dirname(this.filePath));
+                    }
+                        
+                    fs.appendFileSync(this.filePath, data, this.fileEncoding);                    
                 }
             };
         },
