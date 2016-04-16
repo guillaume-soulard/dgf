@@ -1,12 +1,17 @@
 var check = require('check-type');
 var path = require('path');
 var fs = require('fs');
+var utils = require('./utils.js');
+var objectPath = require('object-path');
 
 check.init();
 
 module.exports = {
     newModel: function() {
         return {
+            settings: {
+                defaultDateFormat: 'mm-dd-yyyy'
+            },
             entities: {},
             outputs: {},
             generators: {},
@@ -43,32 +48,32 @@ module.exports = {
     types: {
         integer: {
             serial: function (options) {
-                
+                throw new Error('Not implemented');        
             },
             random: function (options) {
-                
+                throw new Error('Not implemented');                
             }
         },
         date: {
             serial: function (options) {
-                
+                throw new Error('Not implemented');                
             },
             random: function (options) {
-                
+                throw new Error('Not implemented');                  
             }
         },
         string: {
             pattern: function (options) {
-                
+                throw new Error('Not implemented');                  
             }
         },
         list: function (list) {
             return {
                 random: function() {
-                    
+                    throw new Error('Not implemented');                      
                 },
                 sequance: function (options) {
-                    
+                    throw new Error('Not implemented');                      
                 }
             }
         }
@@ -116,16 +121,44 @@ module.exports = {
             }
             
             return {
-                // TODO headers
                 csvSeparator: options.separator,
                 writeHeaders: options.headers,
                 
-                formatEntity: function (entityGenerated) {
+                formatBegin: function (entityTemplate) {
+                    var header = '';
+                    
+                    if (this.writeHeaders) {
+                        
+                        var properties = utils.getPropertiesDeeply(entityTemplate);            
+                        var first = true;
+                        
+                        for (var key in properties) {
+                            
+                            if (first) {
+                                first = false;
+                            } else {
+                                header += this.csvSeparator;
+                            }
+                            
+                            header += properties[key];
+                        }
+                    }
+                    
+                    return header;
+                },
+                
+                formatEnd: function (entityTemplate) {
+                    // Do nothing
+                    return '';
+                },
+                
+                formatEntity: function (generatedEntity) {
                     var formatedEntity = '';
                     
                     var isFirst = true;
+                    var properties = utils.getPropertiesDeeply(generatedEntity);
                     
-                    for (var property in entityGenerated) {
+                    for (var key in properties) {
                         
                         if (isFirst) {
                             isFirst = false;
@@ -133,8 +166,7 @@ module.exports = {
                             formatedEntity += this.csvSeparator;
                         }
                         
-                        // TODO format dates
-                        formatedEntity += entityGenerated[property];
+                        formatedEntity += objectPath.get(generatedEntity, properties[key]);
                     }
                     
                     return formatedEntity;
@@ -143,27 +175,34 @@ module.exports = {
         },
         xml: function (options) {
             throw new Error('Not implemented');
+            
+            return {
+                formatBegin: function (entityTemplate) {
+                    
+                },
+                
+                formatEnd: function (entityTemplate) {
+
+                },
+                
+                formatEntity: function (generatedEntity) {
+                    
+                }  
+            }
         }
     },
     behaviors: {
         times: function (amount) {
-            
+            throw new Error('Not implemented');            
         },
         during: function (timeInMiliseconds) {
-            
+            throw new Error('Not implemented');            
         },
         until: function (dateTo) {
-            
+            throw new Error('Not implemented');            
         },
         pathSizeReach: function (options) {
-            
+            throw new Error('Not implemented');            
         }
     }
 };
-
-var utils = {
-    check: function (structure, objectToCheck) {
-        
-        
-    }
-}

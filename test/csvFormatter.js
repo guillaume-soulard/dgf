@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 var check = require("check-type");
 var path = require('path');
 var fs = require('fs');
+var moment = require('moment');
 
 describe ('formatters', function () {
    
@@ -32,7 +33,7 @@ describe ('formatters', function () {
             }).to.throw(Error, /Csv options must match : {separator:string,headers:boolean}/);            
         });
         
-        it ('should format given entity as csv', function () {
+        it ('should format given simple entity as csv', function () {
             var formatter = dgf.formatters.csv({
                 separator: ';',
                 headers: false
@@ -41,10 +42,78 @@ describe ('formatters', function () {
             var result = formatter.formatEntity({
                 number: 1,
                 string: 'a string',
-                date: new Date(2016, 0, 1, 0, 0, 0)
+                date: '01/01/2016'
             });
             
-            assert.equal(result, '1;a string;Fri Jan 01 2016 00:00:00 GMT+0100 (CET)');
+            assert.equal(result, '1;a string;01/01/2016');
+        });
+        
+        it ('should get headers form entity', function () {
+            var formatter = dgf.formatters.csv({
+                separator: ';',
+                headers: true
+            });
+            
+            var result = formatter.formatBegin({
+                number: 1,
+                string: 'a string',
+                date: '01/01/2016'
+            });
+            
+            assert.equal(result, 'number;string;date');
+        });
+        
+        it ('should not get headers form entity', function () {
+            var formatter = dgf.formatters.csv({
+                separator: ';',
+                headers: false
+            });
+            
+            var result = formatter.formatBegin({
+                number: 1,
+                string: 'a string',
+                date: '01/01/2016'
+            });
+            
+            assert.equal(result, '');
+        });
+        
+        it ('should get headers form complex entity', function () {
+            var formatter = dgf.formatters.csv({
+                separator: ';',
+                headers: true
+            });
+            
+            var result = formatter.formatBegin({
+                number: 1,
+                complex: {
+                    string: 'an another string',
+                    number: 10
+                },
+                string: 'a string',
+                date: '01/01/2016'
+            });
+            
+            assert.equal(result, 'number;complex.string;complex.number;string;date');
+        });
+        
+        it ('should format given complex entity as csv', function () {
+            var formatter = dgf.formatters.csv({
+                separator: ';',
+                headers: false
+            });
+            
+            var result = formatter.formatEntity({
+                number: 1,
+                complex: {
+                    string: 'an another string',
+                    number: 10
+                },
+                string: 'a string',
+                date: '01/01/2016'
+            });
+            
+            assert.equal(result, '1;an another string;10;a string;01/01/2016');
         });
     });
 });
