@@ -7,6 +7,27 @@ var objectPath = require('object-path');
 check.init();
 
 module.exports = {
+    
+    generate: function (modelToGenerate) {
+        
+        for (var entityName in modelToGenerate.generators) {
+            
+            var entityTemplate = modelToGenerate.entities[entityName];
+            
+            // iterate over all generators
+            modelToGenerate.generators[entityName].forEach(function (generator, index) {
+                
+                if (generator.behavior.canGenerate()) {
+                    // generate a new entity from template
+                    
+                    // format the generated entity
+                    
+                    // send generated entity to the output
+                }
+            });
+        }
+    },
+    
     newModel: function() {
         return {
             settings: {
@@ -14,7 +35,7 @@ module.exports = {
             },
             entities: {},
             outputs: {},
-            generators: {},
+            generators: [],
             addEntity: function (entityName, entityDef) {
                                 
                 if (!check(entityName).is('string')) {
@@ -41,6 +62,21 @@ module.exports = {
             },
             addGenerator: function (generatorDefinition) {
                 
+                // TODO check dgf special objects such as formatters and behaviors
+                if (!check(generatorDefinition).matches({
+                    entity: 'string',
+                    output: 'string',
+                    formater: 'object',
+                    behavior: 'object'
+                })) {
+                    throw new Error ('Generator definition must match {entity: string,output: string, formater: dgf.formatter,behavior: dgf.behavior');
+                }
+                
+                if (typeof (this.generators[generatorDefinition.entity]) === 'undefined') {
+                    this.generators[generatorDefinition.entity] = [];
+                }
+                
+                this.generators[generatorDefinition.entity].push(generatorDefinition);
             }
         };
     },
@@ -48,7 +84,49 @@ module.exports = {
     types: {
         integer: {
             serial: function (options) {
-                throw new Error('Not implemented');        
+                
+                if (!check(options).has('from')) {
+                    throw new Error('Options for integer.serial must match {from:integer,to:integer (default: infinity),next:integer (default: 1),cycle:boolean (default: true)}');
+                }
+                
+                if (!check(options).has('to')) {
+                    options.to = null;
+                }
+                
+                if (!check(options).has('next')) {
+                    options.next = 1;
+                }
+                
+                if (!check(options).has('cycle')) {
+                    options.cycle = true;
+                }
+                
+                return {
+                    min: options.from,
+                    max: options.to,
+                    current: options.from,
+                    increment: options.next,
+                    doCycle: options.cycle,
+                    
+                    getValue: function () {
+                        var toReturn = this.current;
+                        
+                        if (this.max != null 
+                                && this.current + this.increment > this.max + 1
+                                && !this.doCycle) {
+                            throw new Error('Max increment. Add cycle: false to allow reloop');
+                        } else if (this.max != null 
+                                && this.current + this.increment > this.max 
+                                && this.doCycle) {
+                            // reloop if cycle = true
+                            this.current = this.min;
+                        } else {
+                            this.current = this.current + this.increment;                            
+                        }                     
+                        
+                        return toReturn;
+                    }
+                }
             },
             random: function (options) {
                 throw new Error('Not implemented');                
@@ -193,7 +271,19 @@ module.exports = {
     },
     behaviors: {
         times: function (amount) {
-            throw new Error('Not implemented');            
+            
+            if (!check(amount).is('number') || amount < 0) {
+                throw new Error ('Amount must be a positive number or 0');
+            }
+            
+            return {
+                max: amount,
+                last: 0,
+                canGenerate: function () {
+                    this.last++;
+                    return this.last <= this.max;
+                }
+            }            
         },
         during: function (timeInMiliseconds) {
             throw new Error('Not implemented');            

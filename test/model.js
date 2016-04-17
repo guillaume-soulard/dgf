@@ -13,7 +13,7 @@ describe('model', function () {
             
             assert.isDefined(model);
             assert.isObject(model.entities);
-            assert.isObject(model.generators);
+            assert.isArray(model.generators);
             assert.isObject(model.outputs);
             assert.isFunction(model.addEntity);
         });
@@ -31,7 +31,7 @@ describe('model', function () {
             
             assert.isObject(model.entities);
             assert.property(model.entities, 'entityName');
-            assert.isObject(model.generators);
+            assert.isArray(model.generators);
             assert.isObject(model.outputs);
         });
         
@@ -70,12 +70,42 @@ describe('model', function () {
             model.addOutput('newOutput',  dgf.outputs.stdout());
             
             assert.isObject(model.entities);
-            assert.isObject(model.generators);
+            assert.isArray(model.generators);
             assert.isObject(model.outputs);
             assert.property(model.outputs, 'newOutput');
             assert.isTrue(check(model.outputs['newOutput']).matches({
                 write: 'function'
             }));
+        });
+    });
+    
+    describe('#addGenerator', function () {
+        it ('should add new generator in model', function () {
+            
+            var model = dgf.newModel();
+            
+            model.addOutput('newOutput',  dgf.outputs.stdout());
+            
+            model.addEntity('entityName',  {
+               field: 'constant'
+            });
+            
+            var generatorToAdd = {
+                entity: 'entityName',
+                output: 'newOutput',
+                formater: dgf.formatters.csv({
+                    separator: ';',
+                    headers: true
+                }),
+                behavior: dgf.behaviors.times(100000)
+            };
+            
+            model.addGenerator(generatorToAdd);
+            
+            assert.isArray(model.generators);
+            assert.property(model.generators, generatorToAdd.entity);
+            assert.isArray(model.generators[generatorToAdd.entity]);
+            assert.include(model.generators[generatorToAdd.entity], generatorToAdd);
         });
     });
 });
