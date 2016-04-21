@@ -115,5 +115,20 @@ describe ('formatters', function () {
             
             assert.equal(result, '1;an another string;10;a string;01/01/2016');
         });
+        
+        it ('should format given entity as csv without gen types', function () {
+            var formatter = dgf.formatters.csv({
+                separator: ';',
+                headers: true
+            });
+            
+            var result = formatter.formatBegin({
+                number: dgf.types.integer.serial({from: 1}),
+                string: 'a string',
+                date: '01/01/2016'
+            });
+            
+            assert.equal(result, 'number;string;date');
+        });
     });
 });

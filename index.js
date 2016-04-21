@@ -3,6 +3,13 @@ var path = require('path');
 var fs = require('fs');
 var utils = require('./utils.js');
 var objectPath = require('object-path');
+var extend = require('extend');
+
+// define an abstract generation type
+// this is for the gen engine to determine if the current object is a gentype
+var AbstractType = {
+    __GEN_TYPE_IND: null
+};
 
 check.init();
 
@@ -17,13 +24,27 @@ module.exports = {
             // iterate over all generators
             modelToGenerate.generators[entityName].forEach(function (generator, index) {
                 
-                if (generator.behavior.canGenerate()) {
+                var template = modelToGenerate.entities[generator.entity]
+                
+                var formatBegin = generator.formater.formatBegin(extend({}, template));
+                modelToGenerate.outputs[generator.output].write(formatBegin);
+                
+                while (generator.behavior.canGenerate()) {
                     // generate a new entity from template
+                    var result = utils.generateEntityFrom(template);
+                    template = result.template;
+                    var generatedEntity = result.object;                    
                     
                     // format the generated entity
-                    
+                    // TODO handle start and end format
+                    var formatedEntity = generator.formater.formatEntity(generatedEntity);
+                                                            
                     // send generated entity to the output
-                }
+                    modelToGenerate.outputs[generator.output].write(formatedEntity);
+                }         
+                
+                var formatEnd = generator.formater.formatEnd(extend({}, template));
+                modelToGenerate.outputs[generator.output].write(formatEnd);
             });
         }
     },
@@ -101,7 +122,7 @@ module.exports = {
                     options.cycle = true;
                 }
                 
-                return {
+                return extend({}, AbstractType, {
                     min: options.from,
                     max: options.to,
                     current: options.from,
@@ -126,7 +147,7 @@ module.exports = {
                         
                         return toReturn;
                     }
-                }
+                });
             },
             random: function (options) {
                 throw new Error('Not implemented');                
