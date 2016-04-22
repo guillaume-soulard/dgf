@@ -28,7 +28,7 @@ module.exports = function (options) {
         increment: options.next,
         doCycle: options.cycle,
 
-        getValue: function () {
+        getValue: function (model) {
             var toReturn = this.current;
 
             if (this.max != null 

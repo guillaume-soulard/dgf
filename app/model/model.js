@@ -3,6 +3,7 @@ var check = require('check-type');
 module.exports = function() {
     return {
         settings: {
+            seed: null,
             defaultDateFormat: 'mm-dd-yyyy'
         },
         entities: {},

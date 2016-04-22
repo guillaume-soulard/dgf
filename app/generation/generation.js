@@ -18,7 +18,7 @@ module.exports = function (modelToGenerate) {
 
             while (generator.behavior.canGenerate()) {
                 // generate a new entity from template
-                var result = utils.generateEntityFrom(template);
+                var result = utils.generateEntityFrom(template, modelToGenerate);
                 template = result.template;
                 var generatedEntity = result.object;                    
 
