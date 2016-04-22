@@ -2,7 +2,7 @@ var dgf = require('../');
 var assert = require('chai').assert;
 var expect = require('chai').expect;
 var check = require("check-type");
-var utils = require('../utils.js');
+var utils = require('../app/utils.js');
 
 describe('utils', function () {
    
