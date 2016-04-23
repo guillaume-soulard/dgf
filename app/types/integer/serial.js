@@ -34,7 +34,7 @@ module.exports = function (options) {
             if (this.max != null 
                     && this.current + this.increment > this.max + 1
                     && !this.doCycle) {
-                throw new Error('Max increment. Add cycle: false to allow reloop');
+                throw new Error('Max increment. Add cycle: true to allow reloop');
             } else if (this.max != null 
                     && this.current + this.increment > this.max 
                     && this.doCycle) {

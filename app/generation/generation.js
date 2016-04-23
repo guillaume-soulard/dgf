@@ -3,7 +3,7 @@ var extend = require('extend');
 var utils = require('../utils.js');
 
 module.exports = function (modelToGenerate) {
-        
+    
     for (var entityName in modelToGenerate.generators) {
 
         var entityTemplate = modelToGenerate.entities[entityName];

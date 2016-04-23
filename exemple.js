@@ -23,6 +23,6 @@ model.addGenerator(dgf.newGenerator({
     behavior: dgf.behaviors.times(100000)
 }));
 
-model.setSeed(234567890);
+model.seed = 234567890;
 
 dgf.generate(model);

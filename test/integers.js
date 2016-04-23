@@ -92,7 +92,7 @@ describe('types.numbers', function () {
             
             expect(function() {
                 numberType.getValue();
-            }).to.throw(Error, 'Max increment. Add cycle: false to allow reloop');
+            }).to.throw(Error, 'Max increment. Add cycle: true to allow reloop');
         });
     });
     
