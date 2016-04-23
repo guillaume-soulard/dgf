@@ -1,5 +1,6 @@
 var check = require('check-type');
 var fs = require('fs');
+var path = require('path');
 
 module.exports ={
     file: function (options) {
@@ -16,12 +17,12 @@ module.exports ={
             filePath: options.path,
             fileEncoding: options.encoding,
             write: function (data) {
-                if (!fs.existsSync(this.filePath)) {
+                if (!fs.existsSync(path.dirname(this.filePath))) {
                     // create full parent file path
                     fs.mkdirSync(path.dirname(this.filePath));
                 }
 
-                fs.appendFileSync(this.filePath, data, this.fileEncoding);                    
+                fs.appendFileSync(this.filePath, data + '\n', this.fileEncoding);
             }
         };
     },

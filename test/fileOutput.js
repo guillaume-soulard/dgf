@@ -38,4 +38,43 @@ describe ('dgf.outputs.file', function() {
         
         fs.unlinkSync(filePath);
     });
+    
+    it ('should create file and path if not exists', function () {
+        
+        var filePath = path.resolve(unitTestFolder, 'testFolder/outputs/unexistingFolder/unexistingFile.txt');
+                
+        var fileOutput = dgf.outputs.file({
+            path: filePath,
+            encoding: 'utf-8'
+        });        
+        var contentToAdd = 'Line 1\nLine 2';
+        
+        fileOutput.write(contentToAdd);
+        
+        var fileContent = fs.readFileSync(filePath);
+        
+        assert.equal(fileContent, contentToAdd);
+        
+        fs.unlinkSync(filePath);
+        fs.rmdirSync(path.dirname(filePath));
+    });
+    
+    it ('should create file and not parent', function () {
+        
+        var filePath = path.resolve(unitTestFolder, 'testFolder/outputs/existingFolder/unexistingFile.txt');
+                
+        var fileOutput = dgf.outputs.file({
+            path: filePath,
+            encoding: 'utf-8'
+        });        
+        var contentToAdd = 'Line 1\nLine 2';
+        
+        fileOutput.write(contentToAdd);
+        
+        var fileContent = fs.readFileSync(filePath);
+        
+        assert.equal(fileContent, contentToAdd);
+        
+        fs.unlinkSync(filePath);
+    });
 });
