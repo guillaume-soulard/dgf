@@ -32,9 +32,9 @@ describe ('dgf.outputs.file', function() {
         
         fileOutput.write(contentToAdd);
         
-        var fileContent = fs.readFileSync(filePath);
+        var fileContent = fs.readFileSync(filePath, 'utf-8');
         
-        assert.equal(fileContent, contentToAdd);
+        assert.equal(fileContent, contentToAdd + '\n');
         
         fs.unlinkSync(filePath);
     });
@@ -51,12 +51,12 @@ describe ('dgf.outputs.file', function() {
         
         fileOutput.write(contentToAdd);
         
-        var fileContent = fs.readFileSync(filePath);
-        
-        assert.equal(fileContent, contentToAdd);
+        var fileContent = fs.readFileSync(filePath, 'utf-8');        
         
         fs.unlinkSync(filePath);
         fs.rmdirSync(path.dirname(filePath));
+        
+        assert.equal(fileContent, contentToAdd + '\n');        
     });
     
     it ('should create file and not parent', function () {
@@ -71,10 +71,9 @@ describe ('dgf.outputs.file', function() {
         
         fileOutput.write(contentToAdd);
         
-        var fileContent = fs.readFileSync(filePath);
-        
-        assert.equal(fileContent, contentToAdd);
+        var fileContent = fs.readFileSync(filePath, 'utf-8');
         
         fs.unlinkSync(filePath);
+        assert.equal(fileContent, contentToAdd + '\n');        
     });
 });
