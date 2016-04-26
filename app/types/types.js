@@ -46,16 +46,12 @@ module.exports = {
                     distribution: null,
                     
                     getValue: function (model) {
-                        
+                                                
                         if (this.engine == null) {
                             this.engine = utils.newEngineByModel(model);                
                         }
 
-                        if (this.distribution == null) {
-                            this.distribution = random.integer(0, this.list.length - 1);
-                        }
-
-                        return this.list[this.distribution(this.engine)];
+                        return random.pick(this.engine, this.list);
                     }
                 });                              
             },
