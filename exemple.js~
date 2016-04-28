@@ -20,7 +20,7 @@ model.addGenerator({
         separator: ';',
         headers: true
     }),
-    behavior: dgf.behaviors.times(10000000)
+    behavior: dgf.behaviors.times(1000000)
 });
 
 model.seed = 234567890;
