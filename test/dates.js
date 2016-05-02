@@ -183,4 +183,20 @@ describe('dgf.type.date', function () {
             
         });
     });
+    
+    describe('#random', function () {
+       
+        it ('should assert parameters are correct', function () {
+           
+            var dateType = dgf.types.date.random({
+                from: new Date(2016, 0, 1, 0, 0, 0, 0),
+                to: new Date(2016, 0, 5, 0, 0, 0, 0),
+                interval: 'day'
+            });
+            
+            assert.isNotNull(dateType);
+            assert.property(dateType, '__GEN_TYPE_IND');
+            assert.isFunction(dateType.getValue);
+        });
+    });
 });

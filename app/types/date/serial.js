@@ -90,6 +90,7 @@ module.exports = function (options) {
     });   
 };
 
+// TODO utils
 function incrementDateBy (date, interval, increment) {
     
     return new Date(
