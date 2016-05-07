@@ -8,10 +8,9 @@ var utils = require('../../utils.js');
 module.exports = function (options) {
         
     if (!check(options).has('from')
-        || !check(options).has('interval') 
         || !check(options).has('to')) {
         
-        throw new Error('Options for date.serial must match {from:date,to:date,interval:"year"|"month"|"day"|"hour"|"minute"|"second"}');
+        throw new Error('Options for date.serial must match {from:date,to:date,format:string(default: mm-dd-yyyy)}');
     } else {
         
         if (!check(options.from).is('date')) {
@@ -24,22 +23,6 @@ module.exports = function (options) {
             throw new Error('to is not a date');
         }
         
-        if (!check(options.interval).is('string')) {
-            
-            throw new Error('next.interval is not a string');
-        }
-        
-        if (options.interval.toLowerCase() != 'year'
-           && options.interval.toLowerCase() != 'month'
-           && options.interval.toLowerCase() != 'day'
-           && options.interval.toLowerCase() != 'hour'
-           && options.interval.toLowerCase() != 'minute'
-           && options.interval.toLowerCase() != 'second'
-           && options.interval.toLowerCase() != 'millisecond') {
-            
-            throw new Error('next.interval value is incorrect : "' + options.interval + '". Expected "year" or "month" or"day" or "hour" or "minute" or "second" or "millisecond"');
-        }
-        
         if (!check(options).has('format')) {
             options.format = null;
         }
@@ -49,7 +32,6 @@ module.exports = function (options) {
 
         min: options.from,
         max: options.to,
-        interval: options.interval.toLowerCase(),
         engine: null,
         distribution: null,
         format: options.format,

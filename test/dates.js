@@ -192,8 +192,7 @@ describe('dgf.type.date', function () {
            
             var dateType = dgf.types.date.random({
                 from: new Date(2016, 0, 1, 0, 0, 0, 0),
-                to: new Date(2016, 0, 5, 0, 0, 0, 0),
-                interval: 'day'
+                to: new Date(2016, 0, 5, 0, 0, 0, 0)
             });
             
             assert.isNotNull(dateType);
@@ -206,8 +205,7 @@ describe('dgf.type.date', function () {
             var model = dgf.newModel();
             var dateType = dgf.types.date.random({
                 from: new Date(2016, 0, 1, 0, 0, 0, 0),
-                to: new Date(2016, 0, 5, 0, 0, 0, 0),
-                interval: 'day'
+                to: new Date(2016, 0, 5, 0, 0, 0, 0)
             });
             
             var dates = [
@@ -259,7 +257,6 @@ describe('dgf.type.date', function () {
             var dateType = dgf.types.date.random({
                 from: new Date(2016, 1, 1, 3, 4, 5, 6),
                 to: new Date(2016, 1, 1, 3, 4, 5, 6),
-                interval: 'day',
                 format: 'dd/mm/yyyy HH:MM:ss'
             });
             

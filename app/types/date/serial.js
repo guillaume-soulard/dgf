@@ -11,7 +11,7 @@ module.exports = function (options) {
         || !check(options).has('next.interval') 
         || !check(options).has('next.increment')) {
         
-        throw new Error('Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true)}');
+        throw new Error('Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true),format:string (default: mm-dd-yyyy)}');
     } else {
         
         if (!check(options.from).is('date')) {
