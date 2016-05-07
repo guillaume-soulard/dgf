@@ -252,5 +252,20 @@ describe('dgf.type.date', function () {
                 assert.include(dates, result);
             }
         });
+        
+        it ('should fotmat date in given format', function () {
+            
+            var model = dgf.newModel();
+            var dateType = dgf.types.date.random({
+                from: new Date(2016, 1, 1, 3, 4, 5, 6),
+                to: new Date(2016, 1, 1, 3, 4, 5, 6),
+                interval: 'day',
+                format: 'dd/mm/yyyy HH:MM:ss'
+            });
+            
+            var result = dateType.getValue(model);
+                
+            assert.equal(result, '01/02/2016 03:04:05');
+        });
     });
 });
