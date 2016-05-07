@@ -39,6 +39,10 @@ module.exports = function (options) {
             
             throw new Error('next.interval value is incorrect : "' + options.interval + '". Expected "year" or "month" or"day" or "hour" or "minute" or "second" or "millisecond"');
         }
+        
+        if (!check(options).has('format')) {
+            options.format = null;
+        }
     }
     
     return extend({}, AbstractType, {        
@@ -48,6 +52,7 @@ module.exports = function (options) {
         interval: options.interval.toLowerCase(),
         engine: null,
         distribution: null,
+        format: options.format,
         
         getValue: function (model) {
                 
@@ -57,7 +62,11 @@ module.exports = function (options) {
                 this.distribution = random.date(this.min, this.max);
             }
             
-            return this.distribution(this.engine);
+            if (this.format == null) {
+                this.format = model.settings.defaultDateFormat;
+            }
+            
+            return utils.formatDate(this.distribution(this.engine), this.format);
         }
     });   
 };

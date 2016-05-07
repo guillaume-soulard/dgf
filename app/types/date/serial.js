@@ -2,6 +2,7 @@ var check = require('check-type');
 var extend = require('extend');
 
 var AbstractType = require('../abstract.js');
+var utils = require('../../utils.js');
 
 module.exports = function (options) {
         
@@ -47,6 +48,10 @@ module.exports = function (options) {
     if (!check(options).has('cycle')) {
         options.cycle = true;
     }
+    
+    if (!check(options).has('format')) {
+        options.format = null;
+    }
 
     return extend({}, AbstractType, {        
 
@@ -55,6 +60,7 @@ module.exports = function (options) {
         next: options.from,
         interval: options.next.interval.toLowerCase(),
         increment: options.next.increment,
+        format: options.format,
         doCycle: options.cycle,
         
         getValue: function (model) {
@@ -84,8 +90,11 @@ module.exports = function (options) {
                 this.next = futureValue;
             }
             
+            if (this.format == null) {
+                this.format = model.settings.defaultDateFormat;
+            }
                 
-            return valueToReturn;
+            return utils.formatDate(valueToReturn, this.format);
         }
     });   
 };

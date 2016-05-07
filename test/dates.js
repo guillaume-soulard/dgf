@@ -1,6 +1,8 @@
 var dgf = require('../');
-var assert = require('chai').assert;
-var expect = require('chai').expect;
+var chai = require('chai');
+chai.use(require('chai-datetime'));
+var assert = chai.assert;
+var expect = chai.expect;
 
 describe('dgf.type.date', function () {
    
@@ -143,9 +145,9 @@ describe('dgf.type.date', function () {
             var date2 = dateType.getValue(model);
             var date3 = dateType.getValue(model);
             
-            assert.equal(date1.getTime(), new Date(2016, 0, 1, 0, 0, 0, 0).getTime());
-            assert.equal(date2.getTime(), new Date(2016, 0, 2, 0, 0, 0, 0).getTime());
-            assert.equal(date3.getTime(), new Date(2016, 0, 3, 0, 0, 0, 0).getTime());
+            assert.equal(date1, '01-01-2016');
+            assert.equal(date2, '01-02-2016');
+            assert.equal(date3,'01-03-2016');
         });
         
         
@@ -169,11 +171,11 @@ describe('dgf.type.date', function () {
             var date4 = dateType.getValue(model);
             var date5 = dateType.getValue(model);
             
-            assert.equal(date1.getTime(), new Date(2016, 0, 1, 0, 0, 0, 0).getTime());
-            assert.equal(date2.getTime(), new Date(2016, 0, 2, 0, 0, 0, 0).getTime());
-            assert.equal(date3.getTime(), new Date(2016, 0, 3, 0, 0, 0, 0).getTime());
-            assert.equal(date4.getTime(), new Date(2016, 0, 4, 0, 0, 0, 0).getTime());
-            assert.equal(date5.getTime(), new Date(2016, 0, 5, 0, 0, 0, 0).getTime());
+            assert.equal(date1, '01-01-2016');
+            assert.equal(date2, '01-02-2016');
+            assert.equal(date3, '01-03-2016');
+            assert.equal(date4, '01-04-2016');
+            assert.equal(date5, '01-05-2016');
             
             expect(function () {
                 
@@ -197,6 +199,58 @@ describe('dgf.type.date', function () {
             assert.isNotNull(dateType);
             assert.property(dateType, '__GEN_TYPE_IND');
             assert.isFunction(dateType.getValue);
+        });
+        
+        it ('should return a random date between the 1 JAN 2016 and 31 JAN 2016', function () {
+           
+            var model = dgf.newModel();
+            var dateType = dgf.types.date.random({
+                from: new Date(2016, 0, 1, 0, 0, 0, 0),
+                to: new Date(2016, 0, 5, 0, 0, 0, 0),
+                interval: 'day'
+            });
+            
+            var dates = [
+                '01-01-2016',
+                '01-02-2016',
+                '01-03-2016',
+                '01-04-2016',
+                '01-05-2016',
+                '01-06-2016',
+                '01-07-2016',
+                '01-08-2016',
+                '01-09-2016',
+                '01-10-2016',
+                '01-11-2016',
+                '01-12-2016',
+                '01-13-2016',
+                '01-14-2016',
+                '01-15-2016',
+                '01-16-2016',
+                '01-17-2016',
+                '01-18-2016',
+                '01-19-2016',
+                '01-20-2016',
+                '01-21-2016',
+                '01-22-2016',
+                '01-23-2016',
+                '01-24-2016',
+                '01-25-2016',
+                '01-26-2016',
+                '01-27-2016',
+                '01-28-2016',
+                '01-29-2016',
+                '01-30-2016',
+                '01-31-2016'
+            ];
+            
+            // test generation of 1000 dates
+            for (var i = 1; i <= 10000; i++) {
+                
+                var result = dateType.getValue(model);
+                
+                assert.include(dates, result);
+            }
         });
     });
 });

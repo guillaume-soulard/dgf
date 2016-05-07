@@ -1,5 +1,6 @@
 var extend = require('extend');
 var random = require('random-js');
+var dateFormat = require('dateformat');
 
 module.exports = {
     getPropertiesDeeply: function (object) {
@@ -43,6 +44,10 @@ module.exports = {
         }
         
         return engine;
+    },
+    formatDate: function (date, format) {
+        
+        return dateFormat(date, format);
     }
 }
 
