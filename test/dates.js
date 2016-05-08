@@ -34,7 +34,7 @@ describe('dgf.type.date', function () {
                         increment: 1
                     }
                 });
-            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true)}');
+            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true),format:string (default: mm-dd-yyyy)}');
             
             // Missing next
             expect(function () {
@@ -42,7 +42,7 @@ describe('dgf.type.date', function () {
                 var dateType = dgf.types.date.serial({
                     from: new Date(2016, 0, 1, 0, 0, 0, 0)
                 });
-            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true)}');
+            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true),format:string (default: mm-dd-yyyy)}');
             
             // missing interval
             expect(function () {
@@ -53,7 +53,7 @@ describe('dgf.type.date', function () {
                         increment: 1
                     }
                 });
-            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true)}');
+            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true),format:string (default: mm-dd-yyyy)}');
             
             // missing increment
             expect(function () {
@@ -64,7 +64,7 @@ describe('dgf.type.date', function () {
                         interval: 'day'
                     }
                 });
-            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true)}');
+            }).to.throw(Error, 'Options for date.serial must match {from:date,to:date (default: infinity),next{interval:"year"|"month"|"day"|"hour"|"minute"|"second",increment:integer},cycle:boolean (default: true),format:string (default: mm-dd-yyyy)}');
         });
         
         it ('should not create date type because from options are not in correct type', function () {
