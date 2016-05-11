@@ -11,6 +11,8 @@ var dateRandom = require('./date/random.js');
 
 var stringPattern = require('./string/pattern.js');
 
+var arrayRandom = require('./array/random.js');
+
 // define an abstract generation type
 // this is for the gen engine to determine if the current object is a gentype
 var AbstractType = {
@@ -28,6 +30,9 @@ module.exports = {
     },
     string: {
         pattern: stringPattern
+    },
+    array: {
+        random: arrayRandom
     },
     list: function (list) {
         

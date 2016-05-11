@@ -52,26 +52,52 @@ module.exports = {
 }
 
 function generateObjectFrom (templateToUse, model) {
-    var generatedObject = extend({}, templateToUse);
-    
-    for (var key in templateToUse) {
-        if (typeof(templateToUse[key]) === 'object' && 
-            typeof(templateToUse[key].__GEN_TYPE_IND) === 'undefined') {
+    var generatedObject = null;
             
-            var result = generatedObject(templateToUse[key]);
-            generatedObject[key] = result.object;
-            templateToUse = result.template;
-        } else if (typeof(templateToUse[key]) === 'object' && 
-                   typeof(templateToUse[key].__GEN_TYPE_IND) !== 'undefined') {
+    if (typeof(templateToUse) === 'object') {
+                
+        generatedObject = extend({}, templateToUse);
+        
+        if (isGenType(templateToUse)) {
             
-            generatedObject[key] = templateToUse[key].getValue(model);
+            generatedObject = templateToUse.getValue(model);
         } else {
-            // do nothing
+        
+            for (var key in templateToUse) {
+                if (isStandardObject(templateToUse[key])) {
+
+                    var result = generateObjectFrom(templateToUse[key]);
+                    generatedObject[key] = result.object;
+                    templateToUse = result.template;
+                } else if (isGenType(templateToUse[key])) {
+
+                    generatedObject[key] = templateToUse[key].getValue(model);
+                } else {
+                    // do nothing
+                }
+            }
         }
+    } else {
+        
+        generatedObject = templateToUse;
     }
     
     return {
         object: generatedObject, 
         template: templateToUse
     };
+}
+
+function isGenType(object) {
+    
+    return object != null &&
+            typeof(object) === 'object' && 
+            typeof(object.__GEN_TYPE_IND) !== 'undefined';
+}
+
+function isStandardObject(object) {
+    
+    return object != null &&
+            typeof(object) === 'object' && 
+            typeof(object.__GEN_TYPE_IND) === 'undefined';
 }
