@@ -74,7 +74,7 @@ describe ('dgf.list', function () {
         it ('should return a predefinied order for seed 1', function () {
             
             var model = dgf.newModel();
-            model.seed = 1;
+            model.settings.seed = 1;
             var list = dgf.types.list(['item 1', 'item 2', 'item 3']).random();
             
             assert.equal(list.getValue(model), 'item 2');
@@ -92,7 +92,7 @@ describe ('dgf.list', function () {
         it ('should return a predefinied order for seed 1234567890', function () {
             
             var model = dgf.newModel();
-            model.seed = 1234567890;
+            model.settings.seed = 1234567890;
             var list = dgf.types.list(['item 1', 'item 2', 'item 3']).random();
             
             for (var i = 0; i <= 10; i++) {

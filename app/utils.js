@@ -34,10 +34,10 @@ module.exports = {
         var engine = null;
         
         if (typeof(model) !== 'undefined' && 
-            typeof (model.seed) !== 'undefined' &&
-            model.seed != null) {
+            typeof (model.settings.seed) !== 'undefined' &&
+            model.settings.seed != null) {
             
-            engine = random.engines.mt19937().seed(model.seed);
+            engine = random.engines.mt19937().seed(model.settings.seed);
         } else {
             
             engine = random.engines.mt19937().autoSeed();            

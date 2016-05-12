@@ -169,9 +169,6 @@ describe('dgf.type.array', function () {
                 assert.isArray(result[i]);
                 
                 for (var j = 0; j < result[i].length; j++) {
-                    
-                    console.log(result[i][j].complexObject.subComplexObject.number);
-                    console.log(j);
                     assert.deepEqual(result[i][j], {
                         complexObject: {
                             subComplexObject: {
@@ -188,7 +185,19 @@ describe('dgf.type.array', function () {
         
         it ('should generate the same array on seed 1', function () {
             
-            throw new Error('Not implemented');
+            var model = dgf.newModel();
+            model.settings.seed = 1;
+            var arrayType = dgf.types.array.random({
+                from: 5, 
+                to: 10,
+                object: 'A string'
+            });
+            
+            var result = arrayType.getValue(model);
+                        
+            assert.isArray(result);
+            // always generate array of length 6 for first call for seed 1
+            assert.equal(result.length, 6);
         });
     });
 });

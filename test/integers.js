@@ -2,7 +2,7 @@ var dgf = require('../');
 var assert = require('chai').assert;
 var expect = require('chai').expect;
 
-describe('types.numbers', function () {
+describe('types.integer', function () {
    
     describe('#serial', function () {
        
@@ -113,7 +113,7 @@ describe('types.numbers', function () {
             
              var randomInteger = dgf.types.integer.random({from: 1, to: 10});
              var model = dgf.newModel();
-             model.seed = 1;
+             model.settings.seed = 1;
              
              assert.equal(6, randomInteger.getValue(model));
              assert.equal(10, randomInteger.getValue(model));
@@ -132,11 +132,11 @@ describe('types.numbers', function () {
             
              var randomInteger1 = dgf.types.integer.random({from: 1, to: 10});
              var model1 = dgf.newModel();
-             model1.seed = 1;
+             model1.settings.seed = 1;
              
              var randomInteger2 = dgf.types.integer.random({from: 1, to: 10});
              var model2 = dgf.newModel();
-             model2.seed = 1234567890;
+             model2.settings.seed = 1234567890;
              
              assert.notEqual(randomInteger2.getValue(model2), randomInteger1.getValue(model1));
          });

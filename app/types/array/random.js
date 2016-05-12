@@ -27,14 +27,13 @@ module.exports = function (options) {
                 && this.distribution == null) {
                 this.engine = utils.newEngineByModel(model);
                 this.distribution = random.integer(this.min, this.max);
+                
+                console.log('null');
             }
-            
-            if (this.format == null) {
-                this.format = model.settings.defaultDateFormat;
-            }
-            
+                        
             var array = [];
             var maxGenerated = this.distribution(this.engine);
+            console.log('maxGenerated : ' + maxGenerated)
             
             for (var i = 0; i < maxGenerated; i++) {
                                 
