@@ -243,7 +243,7 @@ describe('dgf.type.date', function () {
             ];
             
             // test generation of 1000 dates
-            for (var i = 1; i <= 10000; i++) {
+            for (var i = 1; i <= 100; i++) {
                 
                 var result = dateType.getValue(model);
                 
