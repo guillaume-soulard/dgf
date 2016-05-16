@@ -14,21 +14,16 @@ module.exports = function (options) {
     return extend({}, AbstractType, {
         min: options.from,
         max: options.to,
-        engine: null,
         distribution: null,
         
         getValue: function (model) {
-            
-            if (this.engine == null) {
-                this.engine = utils.newEngineByModel(model);                
-            }
-            
+                        
             if (this.distribution == null) {
                 
                 this.distribution = random.integer(this.min, this.max);
             }
             
-            return this.distribution(this.engine);
+            return this.distribution(model.getEngine());
         }
     });
 };

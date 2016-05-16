@@ -27,14 +27,9 @@ module.exports = function (options) {
     
     return extend({}, AbstractType, {
         pattern: options.pattern,
-        engine: null,
         distributions: null,
 
         getValue: function (model) {
-
-            if (this.engine == null) {
-                this.engine = utils.newEngineByModel(model);
-            }
 
             if (this.distributions == null) {
                 this.distributions = {
@@ -51,7 +46,7 @@ module.exports = function (options) {
             var match;
             while ((match = pattern.exec(string))) {
 
-                var generatedString = generateStringFrom(match[0], this.engine, this.distributions);                    
+                var generatedString = generateStringFrom(match[0], model.getEngine(), this.distributions);                    
                 string = string.replace(match[0], generatedString);
             }            
             

@@ -47,16 +47,10 @@ module.exports = {
                 
                 return extend({}, AbstractType, {
                     list: this.array,
-                    engine: null,
-                    distribution: null,
                     
                     getValue: function (model) {
-                                                
-                        if (this.engine == null) {
-                            this.engine = utils.newEngineByModel(model);                
-                        }
 
-                        return random.pick(this.engine, this.list);
+                        return random.pick(model.getEngine(), this.list);
                     }
                 });                              
             },

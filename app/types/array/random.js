@@ -18,19 +18,16 @@ module.exports = function (options) {
         min: options.from,
         max: options.to,
         template: options.object,
-        engine: null,
         distribution: null,
         
         getValue: function (model) {
                         
-            if (this.engine == null
-                && this.distribution == null) {
-                this.engine = utils.newEngineByModel(model);
+            if (this.distribution == null) {
                 this.distribution = random.integer(this.min, this.max);
             }
                         
             var array = [];
-            var maxGenerated = this.distribution(this.engine);
+            var maxGenerated = this.distribution(model.getEngine());
             
             for (var i = 0; i < maxGenerated; i++) {
                                 

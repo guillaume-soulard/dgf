@@ -1,11 +1,33 @@
 var check = require('check-type');
+var random = require('random-js');
 
 module.exports = function() {
+
     return {
         settings: {
             seed: null,
             defaultDateFormat: 'mm-dd-yyyy'
         },
+        getEngine: function () {
+            
+            if (this.__engine == null) {
+
+                if (typeof (this.settings) !== 'undefined' &&
+                    typeof (this.settings.seed) !== 'undefined' &&
+                    this.settings.seed != null) {
+
+                    this.__engine = random.engines.mt19937().seed(this.settings.seed);
+                    console.log('seed');
+                } else {
+
+                    this.__engine = random.engines.mt19937().autoSeed();  
+                    console.log('auto seed');
+                }
+            }
+            
+            return this.__engine;
+        },
+        __engine: null,
         entities: {},
         outputs: {},
         generators: [],

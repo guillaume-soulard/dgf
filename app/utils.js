@@ -1,5 +1,4 @@
 var extend = require('extend');
-var random = require('random-js');
 var dateFormat = require('dateformat');
 
 module.exports = {
@@ -28,22 +27,6 @@ module.exports = {
     },
     generateEntityFrom: function (entityTemplate, model) {
         return generateObjectFrom(entityTemplate, model);
-    },
-    newEngineByModel: function (model) {
-        
-        var engine = null;
-        
-        if (typeof(model) !== 'undefined' && 
-            typeof (model.settings.seed) !== 'undefined' &&
-            model.settings.seed != null) {
-            
-            engine = random.engines.mt19937().seed(model.settings.seed);
-        } else {
-            
-            engine = random.engines.mt19937().autoSeed();            
-        }
-        
-        return engine;
     },
     formatDate: function (date, format) {
         
