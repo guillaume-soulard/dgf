@@ -83,18 +83,84 @@ Lors de la création d'entités, il est possible de spécifier des types prédé
 
 ###Entiers
 
-####Random
-<Description>
-<Format>
-<Exemple>
+```javascript
+dgf.types.integer.random({
+    from: <date>,
+    to: <date>,
+    format: <string> (default: mm-dd-yyyy)
+});
+dgf.types.integer.serial({
+    from: <date>,
+    to: <date> (default: infinity),
+    next{
+        interval:"year"|"month"|"day"|"hour"|"minute"|"second",
+        increment: <integer>
+    },
+    cycle:<boolean> (default: true),
+    format: <string> (default: mm-dd-yyyy)
+});
+```
 
 ###Dates
 
+```javascript
+dgf.types.date.random({
+    from: <integer>,
+    to: <integer>
+});
+dgf.types.date.serial({
+    from: <integer>,
+    to: <integer> (default: infinity),
+    next: <integer> (default: 1),
+    cycle: <boolean> (default: true)
+});
+```
+
 ###Chaînes de caractères
 
+```javascript
+dgf.types.string.pattern({
+    pattern: <string>
+});
+
+```
+
+La propriété pattern peut être n'importe quelle chaîne de caractère.
+Il est possible de spécifier des caratères générés aléatoirement en fonction d'un pattern.
+
+Le pattern doit être entre "#{" et "}" et doit contenir uniquement les catactères suivants : 
+- a : any lower case letter between a and z
+- A : any upper case letter between A and Z
+- z : any upper or lower case letter betwwen a and Z
+- n : any number between 0 and 9
+
+Exemple : 
+```javascript
+dgf.types.string.pattern({
+    pattern: 'Article N°#{AAAnnnnn}' // donnera par exemple : Article N°ATG67401
+});
+```
+
 ###Tableaux
+Permet de générer un tableau de taille aléatoire d'objets
+
+```javascript
+dgf.types.array.random({
+    from: <integer>,
+    to: <integer>,
+    object: <object>
+});
+```
 
 ###Listes
+
+```javascript
+dgf.types.list([1, 'a string', new Date()]).random();
+
+dgf.types.list([1, 'a string', new Date()]).serial({
+    cycle: <boolean> (default: true)
+});
+```
 
 ##Les formateurs
 
@@ -103,5 +169,7 @@ Lors de la création d'entités, il est possible de spécifier des types prédé
 ##Les comportments
 
 ##Les paramètres du modèle
+
 ###Format de date par défaut
+
 ###La graine

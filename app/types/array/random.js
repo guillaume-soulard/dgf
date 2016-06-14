@@ -10,7 +10,7 @@ module.exports = function (options) {
         || !check(options).has('to')
         || !check(options).has('object')) {
         
-        throw new Error('Options for array.random must match {from:date,to:date,object:object}');
+        throw new Error('Options for array.random must match {from:integer,to:integer,object:object}');
     }
     
     return extend({}, AbstractType, {        
