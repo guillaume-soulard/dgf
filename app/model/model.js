@@ -17,11 +17,9 @@ module.exports = function() {
                     this.settings.seed != null) {
 
                     this.__engine = random.engines.mt19937().seed(this.settings.seed);
-                    console.log('seed');
                 } else {
 
                     this.__engine = random.engines.mt19937().autoSeed();  
-                    console.log('auto seed');
                 }
             }
             

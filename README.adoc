@@ -1,0 +1,286 @@
+= DGF (Data Generation Framework)
+
+DGF est un Framework node JS qui permet de faciliter la génération de données de test.
+
+= Exemple
+
+L'exemple ci-dessous permet de générer un fichier CSV contenant des utilisateurs
+
+[source]
+----
+require('dgf'); 
+var model = dgf.newModel();
+
+model.addEntity('user', {
+    id: dgf.types.integer.serial({
+        from: 1, 
+        next: 1
+    }),
+    num: dgf.types.integer.random({
+        from: 1, 
+        to: 1000000
+    }),
+    name: dgf.types.string.pattern({
+        pattern: '#{zzzzzzz} #{zzzzzzzz}'
+    }),
+    day_of_birth: dgf.types.date.random({
+        from: new Date(2016, 0, 1, 0, 0, 0), 
+        to: new Date (2016, 11, 31, 23, 59, 0), 
+        format: 'dd/mm/yyyy'
+    }),
+    tags: dgf.types.array.random({
+        from: 0,
+        to: 7,
+        object: dgf.types.list(['tag 1',
+                          'tag 2', 
+                          'tag 3', 
+                          'tag 3']).random()
+    })
+});
+
+model.addOutput('userOutput', dgf.outputs.file({
+    path: '/tmp/users.csv',
+    encoding: 'utf-8'
+}));
+
+// generate as CSV file
+model.addGenerator({
+    entity: 'user',
+    output: 'userOutput',
+    formater: dgf.formatters.csv({
+        separator: ';',
+        headers: true
+    }),
+    behavior: dgf.behaviors.times(1000) // generate 1000 users
+});
+
+model.settings.seed = 234567890;
+
+dgf.generate(model);
+----
+
+= Architecture
+
+La librairie DGF comporte les éléments suivants : 
+
+* Des entités : ce sont les éléments qui vont servir de modèle à la génération des données.
+* Des type de données : Ormi les types javascript standards (chaîne de caractère, nombre, date, tableaux, ...)..
+...Il existe des types spéciaux qui vont servir à définir le comportement à adopter pour la génération..
+...(générer un nombre entre 0 et 10 par exemple).
+* Les formateurs : ce sont eux qui à partir des entitées générées vont transformer les données en un format spécifique (exemple : CSV, SQL, ...)
+* Les sorties : qui vont définir comment les données générées et formatées vont être publiées (fichier, stdout, ou autre).
+* Les comportements : servent à définir la quantité de données à générer (par exemples : 1000 utilisateurs)
+
+Le processus de génération suit le schéma suivant : 
+
+<TODO>
+
+= API
+
+== Generation types
+
+Lors de la création d'entités, il est possible de spécifier des types prédéfinits pour la génération des données.
+
+=== Nombres
+==== Entiers
+
+[source]
+----
+dgf.types.integer.random({
+    from: <date>,
+    to: <date>,
+    format: <string> (default: mm-dd-yyyy)
+});
+dgf.types.integer.serial({
+    from: <date>,
+    to: <date> (default: infinity),
+    next{
+        interval:"year"|"month"|"day"|"hour"|"minute"|"second",
+        increment: <integer>
+    },
+    cycle:<boolean> (default: true),
+    format: <string> (default: mm-dd-yyyy)
+});
+----
+
+==== Décimaux
+
+TODO
+
+=== Dates
+
+[source]
+----
+dgf.types.date.random({
+    from: <integer>,
+    to: <integer>
+});
+
+dgf.types.date.serial({
+    from: <integer>,
+    to: <integer> (default: infinity),
+    next: <integer> (default: 1),
+    cycle: <boolean> (default: true)
+});
+----
+
+=== Chaînes de caractères
+==== Pattern
+
+[source]
+----
+dgf.types.string.pattern({
+    pattern: <string>
+});
+
+----
+
+La propriété pattern peut être n'importe quelle chaîne de caractère.
+Il est possible de spécifier des caratères générés aléatoirement en fonction d'un pattern.
+
+Le pattern doit être entre "#{" et "}" et doit contenir uniquement les catactères suivants : 
+
+* a : any lower case letter between a and z
+* A : any upper case letter between A and Z
+* z : any upper or lower case letter betwwen a and Z
+* n : any number between 0 and 9
+
+Exemple : 
+[source]
+----
+dgf.types.string.pattern({
+    pattern: 'Article N°#{AAAnnnnn}' // donnera par exemple : Article N°ATG67401
+});
+----
+
+==== Phrases
+
+TODO
+
+==== Textes
+
+TODO
+
+=== Tableaux
+Permet de générer un tableau de taille aléatoire d'objets. Les objets peuvent être fixes ou dynamiques.
+
+[source]
+----
+dgf.types.array.random({
+    from: <integer>,
+    to: <integer>,
+    object: <object>
+});
+----
+
+=== Listes
+
+Le type liste permet de choisir une valeur parmis une liste d'objets.
+
+[source]
+----
+dgf.types.list([1, 'a string', new Date()]).random();
+
+dgf.types.list([1, 'a string', new Date()]).serial({
+    cycle: <boolean> (default: true)
+});
+----
+
+== Les formateurs
+Un formateur permet de transformer une entité en un format de sortie. Le framework supporte quelques types de base. Le formateur doit être spécifié dans la partie générateur.
+
+[source]
+----
+model.addGenerator({
+    entity: 'someEntity',
+    output: 'someOutput',
+    formater: dgf.formatters.<someFormater>({
+        separator: ';',
+        headers: true
+    })
+});
+----
+
+=== CSV
+
+[source]
+----
+dgf.formetters.csv({
+    separator: <string>
+    header: <boolean>
+})
+----
+
+=== SQL
+TODO
+
+=== XML
+TODO
+
+=== JSON
+TODO
+
+== Les sorties
+Les sorties permettent de spécifier où doivent être écritent les données (dans un fichier par example). Le framework supporte plusieurs type de sortie possible.
+
+=== Fichier
+
+[source]
+----
+model.addOutput('name', dgf.outputs.file({
+    path: '/tmp/users.csv',
+    encoding: 'utf-8'
+}));
+----
+
+=== STDOUT
+
+[source]
+----
+model.addOutput('name', dgf.outputs.stdout());
+----
+
+=== REST
+TODO
+
+=== JDBC
+TODO
+
+== Les comportments
+
+Les comportements permettent de spécifier comment doit la génération doit se comporter. Les comportements doivent être spécifiés sur les générateurs.
+
+=== Nombre d'éléments
+
+[source]
+----
+model.addGenerator({
+    entity: '<entity_name>',
+    output: '<output_name>',
+    formater: <a_generator>,
+    behavior: dgf.behaviors.times(1000)
+});
+----
+
+== Les paramètres du modèle
+
+[source]
+----
+model.settings.<setting> = <value>;
+----
+
+Liste des paramètres du modèle : 
+
+[options="header,footer"]
+|=======================
+|Nom du paramètre |Type   |Valeur par défaut
+|seed             |long   |null
+|defaultDateFormat|string |mm-dd-yyyy
+|=======================
+
+Des paramètres dynamiques peuvent être ajoutés et seront demandés par DGF lors de l'execution : 
+
+[source]
+----
+model.settings.add('<name>', '<type>'[, '<default_value>']);
+----
